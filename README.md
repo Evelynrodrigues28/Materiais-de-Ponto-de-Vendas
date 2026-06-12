@@ -116,16 +116,6 @@ O relatório permite simular diferentes cenários de orçamento e analisar:
 
 ---
 
-## 💡 Possíveis Evoluções
-
-- Otimização com programação linear  
-- Inclusão de ROI por material  
-- Segmentação avançada (clusterização)  
-- Integração com dados reais  
-- Deploy como aplicação (Streamlit ou Power BI Service)  
-
----
-
 ## 📌 Observação Final
 
 Este projeto foi desenvolvido para demonstrar habilidades em análise de dados, modelagem de decisão e construção de soluções end-to-end aplicadas ao contexto de trade marketing.
