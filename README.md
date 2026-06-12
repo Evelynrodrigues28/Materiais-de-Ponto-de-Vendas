@@ -1,80 +1,48 @@
-# Trade Marketing POS Material & Budget Allocation
+# 📊 Trade Marketing — Alocação de Materiais de PDV & Orçamento
 
-End-to-end analytics project that decides **how to allocate point-of-sale (POS) marketing materials and a limited trade-marketing budget across a network of retail distributors** — from raw sell-out data to an interactive Power BI report.
+Projeto end-to-end de analytics que define **como alocar materiais de ponto de venda (PDV) e um orçamento limitado de trade marketing** em uma rede de distribuidores — desde dados brutos de sell-out até um relatório interativo em Power BI.
 
-> **Note:** This is a portfolio project. The company ("ACME Snacks Co."), distributors, stores, prices and all data are **100% synthetic**. No real or proprietary data is included.
+> ⚠️ **Nota:** Este é um projeto de portfólio. A empresa ("ACME Snacks Co."), distribuidores, lojas, preços e todos os dados são **100% sintéticos**. Nenhum dado real ou proprietário foi utilizado.
 
 ---
 
-## Business problem
+## 🎯 Problema de Negócio
 
-A CPG company (ACME Snacks Co.) sells through dozens of independent distributors, each serving hundreds of points of sale (POS). The trade-marketing team must decide:
+Uma empresa de bens de consumo (ACME Snacks Co.) vende por meio de dezenas de distribuidores independentes, que atendem centenas de pontos de venda (PDVs).
 
-1. **Which stores** should receive POS materials (displays, shelf liners, pallet covers, etc.)?
-2. **How many** units of each material does each distributor need?
-3. Given a **fixed budget** that is smaller than the total need, **how should the money be split** across distributors — fairly and automatically?
+O time de trade marketing precisa responder:
 
-## Approach
+- Quais lojas devem receber materiais de PDV (displays, réguas de gôndola, ilhas, etc.)?
+- Quantas unidades de cada material cada distribuidor precisa?
+- Dado um orçamento limitado, como distribuí-lo de forma justa, eficiente e automatizada?
 
-The pipeline focuses investment on the highest-performing stores and sizes the material need per distributor:
+---
 
-1. **Moving window** – keep only the most recent 6 periods of sell-out.
-2. **Top 10% stores** – within each distributor, keep only the POS in the top 10% by revenue (where material investment pays off most).
-3. **Segment classification** – each store belongs to a retail segment (Hypermarket, Wholesale, Pharmacy, ...).
-4. **Material kit per segment** – each segment has a fixed "kit" of materials per store.
-5. **Consolidation** – material quantity = kit per store × number of top-10% stores in that segment.
-6. **Budget allocation (Power BI)** – the budget is split across distributors **proportionally to their material need**, capped at each distributor's need, and translated back into how many units of each material it can fund.
+## 🧠 Abordagem Analítica
 
-## Repository structure
+A solução prioriza o investimento nas lojas com maior retorno esperado e dimensiona automaticamente a necessidade de materiais:
 
-```
-trade-budget-allocation/
-├── README.md
-├── requirements.txt
-├── data/
-│   └── generate_sample_data.py   # creates synthetic sellout.csv + pos_dimension.csv
-├── src/
-│   └── pipeline.py               # builds the consolidated material plan (pandas)
-├── powerbi/
-│   └── dax_measures.md           # budget-allocation measures for the report
-└── docs/
-    └── methodology.md            # step-by-step methodology
-```
+1. **Janela móvel**  
+   Considera apenas os últimos 6 períodos de sell-out.
 
-## How to run
+2. **Top 10% de lojas**  
+   Dentro de cada distribuidor, seleciona os PDVs no top 10% em receita.
 
-```bash
-pip install -r requirements.txt
+3. **Classificação por segmento**  
+   Cada loja pertence a um segmento (Hipermercado, Atacado, Farmácia, etc.).
 
-# 1) generate synthetic input data
-python data/generate_sample_data.py
+4. **Kit de materiais por segmento**  
+   Cada segmento possui um kit padrão por loja.
 
-# 2) build the consolidated material plan
-python src/pipeline.py
-```
+5. **Consolidação da demanda**  
+   Quantidade total = kit por loja × número de lojas top 10% no segmento.
 
-The pipeline writes `data/output/pos_materials_plan.csv`, which is the dataset consumed by the Power BI report (see `powerbi/dax_measures.md`).
+6. **Alocação do orçamento (Power BI)**  
+   O orçamento é distribuído:
+   - proporcional à necessidade
+   - limitado ao máximo necessário (cap)
+   - convertido em unidades de materiais financiáveis
 
-## Power BI layer
+---
 
-The report lets a trade-marketing analyst type a budget and instantly see, per distributor:
-
-* **Budget Allocated** – the distributor's share of the budget (proportional to need, capped at need).
-* **Coverage** – the fraction of the need the budget covers.
-* **Units funded per material** – how many units of each material the budget pays for.
-
-All DAX is documented in [`powerbi/dax_measures.md`](powerbi/dax_measures.md).
-
-## Tech stack
-
-* **Python** (pandas, numpy) – data generation and the allocation pipeline
-* **Power BI** (DAX, What-If parameters) – interactive budget allocation
-* Original production version ran on **Databricks / PySpark** over a data warehouse; this portfolio version is refactored to pure pandas + synthetic data so it runs anywhere.
-
-## Key concepts demonstrated
-
-* Window-based filtering and percentile ranking per group
-* Rule-based "kit" expansion (need sizing)
-* Proportional budget allocation with a cap (and why it's mathematically a uniform coverage %)
-* Translating a monetary allocation back into purchasable units
-* Designing measures that react to an interactive parameter in BI
+## 📁 Estrutura do Repositório
